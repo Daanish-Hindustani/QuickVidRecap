@@ -10,6 +10,7 @@ class Video(Base):
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
     private_url = Column(String(500), nullable=False)
+    youtube_url = Column(String(500), nullable=False)
 
     user_id = Column(CHAR(36), ForeignKey("users.id"), nullable=False)
     user = relationship("Users", backref="videos")
