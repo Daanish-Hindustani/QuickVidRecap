@@ -13,7 +13,7 @@ class SubscriptionTypeEnum(str, Enum):
     ENTERPRISE = "enterprise"
 
 
-class SubscriptionCreateSchema(BaseModel):
+class SubscriptionCreate(BaseModel):
     subscription_type: SubscriptionTypeEnum
     subscription_start: datetime
     subscription_end: Optional[datetime] = None
@@ -21,7 +21,7 @@ class SubscriptionCreateSchema(BaseModel):
     user_id: UUID
 
 
-class SubscriptionUpdateSchema(BaseModel):
+class SubscriptionUpdate(BaseModel):
     subscription_type: Optional[SubscriptionTypeEnum] = None
     subscription_start: Optional[datetime] = None
     subscription_end: Optional[datetime] = None
@@ -31,7 +31,7 @@ class SubscriptionUpdateSchema(BaseModel):
         orm_mode = True
 
 
-class SubscriptionResponseSchema(BaseModel):
+class SubscriptionResponse(BaseModel):
     id: int
     subscription_type: SubscriptionTypeEnum
     subscription_start: datetime
