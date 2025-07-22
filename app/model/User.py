@@ -12,5 +12,6 @@ class Users(Base):
     email = Column(String(100), unique=True, nullable=False)
     address = Column(String(255), nullable=False)
     phone_number = Column(String(255), nullable=False)
-    created_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
     subscriptions = relationship("Subscription", backref="user")

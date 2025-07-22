@@ -16,7 +16,7 @@ class Subscription(Base):
     subscription_start = Column(DateTime, nullable=False)
     subscription_end = Column(DateTime, nullable=True)
     credits = Column(Integer, nullable=False)
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user_id = Column(CHAR(36), ForeignKey("users.id"), nullable=False)
