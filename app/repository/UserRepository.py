@@ -1,50 +1,46 @@
 from sqlalchemy.orm import Session
-from ..model.Video import Videos
-from ..schema.VideoSchema import VideoCreate, VideoUpdate
+from ..model.User import Users
+from ..schema.UserSchema import UserCreate, UserUpdate
 
-class VideoRepository:
+class UserRepository:
     def __init__(self, db: Session):
         self.db = db
 
     # Create
-    def create(self, video_in: VideoCreate) -> Videos:
-        video = Videos(**video_in.model_dump())
-        self.db.add(video)
+    def create(self, user_in: UserCreate) -> Users:
+        user = Users(**user_in.model_dump())
+        self.db.add(user)
         self.db.commit()
-        self.db.refresh(video)
-        return video
+        self.db.refresh(user)
+        return user
 
-    # Read
-    def get_by_id(self, video_id: str) -> Videos | None:
-        return self.db.query(Videos).filter(Videos.id == video_id).first()
+    # Read by ID
+    def get_by_id(self, user_id: str) -> Users | None:
+        return self.db.query(Users).filter(Users.id == user_id).first()
 
-    # noinspection PyTypeChecker
-    def get_by_user_id(self, user_id: str) -> list[Videos]:
-        return self.db.query(Videos).filter(Videos.user_id == user_id).all()
-
-    # noinspection PyTypeChecker
-    def list(self, skip: int = 0, limit: int = 100) -> list[Videos]:
-        return self.db.query(Videos).offset(skip).limit(limit).all()
+    # Read by email
+    def get_by_email(self, email: str) -> Users | None:
+        return self.db.query(Users).filter(Users.email == email).first()
 
     # Update
-    def update(self, video_id: str, video_update: VideoUpdate) -> Videos | None:
-        video = self.get_by_id(video_id)
-        if not video:
+    def update(self, user_id: str, user_update: UserUpdate) -> Users | None:
+        user = self.get_by_id(user_id)
+        if not user:
             return None
 
-        update_data = video_update.model_dump(exclude_unset=True)
+        update_data = user_update.model_dump(exclude_unset=True)
         for key, value in update_data.items():
-            setattr(video, key, value)
+            setattr(user, key, value)
 
         self.db.commit()
-        self.db.refresh(video)
-        return video
+        self.db.refresh(user)
+        return user
 
     # Delete
-    def delete(self, video_id: str) -> bool:
-        video = self.get_by_id(video_id)
-        if video:
-            self.db.delete(video)
+    def delete(self, user_id: str) -> bool:
+        user = self.get_by_id(user_id)
+        if user:
+            self.db.delete(user)
             self.db.commit()
             return True
         return False
