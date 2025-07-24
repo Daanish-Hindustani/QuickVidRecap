@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from ..model.Video import Videos
-from ..schema.VideoSchema import VideoCreate, VideoUpdate
+from model.Video import Videos
+from schema.VideoSchema import VideoCreate, VideoUpdate
 
 class VideoRepository:
     def __init__(self, db: Session):

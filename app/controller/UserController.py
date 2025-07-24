@@ -11,13 +11,13 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 # Create User
 @router.post("/", response_model=UserResponse)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
+async def create_user(user: UserCreate, db: Session = Depends(get_db)):
     repo = UserRepository(db)
     return repo.create(user)
 
 # Get User
 @router.get("/{user_id}", response_model=UserResponse)
-def get_user(user_id: str, db: Session = Depends(get_db)):
+async def get_user(user_id: str, db: Session = Depends(get_db)):
     repo = UserRepository(db)
     user = repo.get_by_id(user_id)
     if not user:
@@ -26,7 +26,7 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
 
 # Update User
 @router.put("/{user_id}", response_model=UserResponse)
-def update_user(user_id: str, user_update: UserUpdate, db: Session = Depends(get_db)):
+async def update_user(user_id: str, user_update: UserUpdate, db: Session = Depends(get_db)):
     repo = UserRepository(db)
     existing_user = repo.get_by_id(user_id)
     if not existing_user:
@@ -36,7 +36,7 @@ def update_user(user_id: str, user_update: UserUpdate, db: Session = Depends(get
 
 # Delete User
 @router.delete("/{user_id}", response_model=UserResponse)
-def delete_user(user_id: str, db: Session = Depends(get_db)):
+async def delete_user(user_id: str, db: Session = Depends(get_db)):
     repo = UserRepository(db)
     user = repo.get_by_id(user_id)
     if not user:
@@ -45,7 +45,7 @@ def delete_user(user_id: str, db: Session = Depends(get_db)):
 
 # Get User Videos
 @router.get("/{user_id}/videos", response_model=List[VideoResponse])
-def get_videos(user_id: str, db: Session = Depends(get_db)):
+async def get_videos(user_id: str, db: Session = Depends(get_db)):
     repo = UserRepository(db)
     user = repo.get_by_id(user_id)
     if not user:

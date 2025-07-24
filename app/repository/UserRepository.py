@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from ..model.User import Users
-from ..schema.UserSchema import UserCreate, UserUpdate
+from model.User import Users
+from schema.UserSchema import UserCreate, UserUpdate
 
 class UserRepository:
     def __init__(self, db: Session):
