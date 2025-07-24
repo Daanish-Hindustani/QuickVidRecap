@@ -2,6 +2,7 @@ from sqlalchemy import Column, String, Integer, Text, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from app.db.database import Base
 from sqlalchemy.dialects.mysql import CHAR
+from datetime import datetime, timezone
 
 class Videos(Base):
     __tablename__ = "videos"
@@ -11,7 +12,7 @@ class Videos(Base):
     description = Column(Text, nullable=True)
     private_url = Column(String(500), nullable=False)
     youtube_url = Column(String(500), nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     user_id = Column(CHAR(36), ForeignKey("users.id"), nullable=False)
-    user = relationship("Users", backref="videos")
+    user = relationship("Users", back_populates="videos")
