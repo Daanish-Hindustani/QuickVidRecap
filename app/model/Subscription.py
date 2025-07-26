@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, DateTime, Enum, ForeignKey
 from sqlalchemy.dialects.mysql import CHAR
 from enum import Enum as PyEnum
-from ..db.database import Base
+from .. db.database import Base
+from datetime import datetime, timezone
 
 class SubscriptionTypeEnum(PyEnum):
     BASIC = "basic"
@@ -16,7 +17,7 @@ class Subscription(Base):
     subscription_start = Column(DateTime, nullable=False)
     subscription_end = Column(DateTime, nullable=True)
     credits = Column(Integer, nullable=False)
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc) , onupdate=datetime.now(timezone.utc) )
 
     user_id = Column(CHAR(36), ForeignKey("users.id"), nullable=False)
