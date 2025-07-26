@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from model.Subscription import Subscription
-from schema.SubscriptionSchema import SubscriptionCreate, SubscriptionUpdate
+from .. model.Subscription import Subscription
+from .. schema.SubscriptionSchema import SubscriptionCreate, SubscriptionUpdate
 
 class SubscriptionRepository:
     def __init__(self, db: Session):

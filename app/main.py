@@ -1,18 +1,32 @@
-from fastapi import FastAPI
-from app.auth.google_auth import router as google_auth_router
-# from app.routes.video import router as video_router
-# Import other routers as needed
-# from app.routes.user import router as user_router
-# from app.routes.subscription import router as subscription_router
+import os
+from fastapi import FastAPI, Request, Depends
+from fastapi.responses import HTMLResponse
+from starlette.middleware.sessions import SessionMiddleware
+
+from app.auth.google_auth import router as google_auth_router, get_current_user
 
 app = FastAPI()
 
-# Register all routers
-app.include_router(google_auth_router, prefix="/auth", tags=["auth"])
-# app.include_router(video_router, prefix="/videos", tags=["videos"])
-# app.include_router(user_router, prefix="/users", tags=["users"])
-# app.include_router(subscription_router, prefix="/subscriptions", tags=["subscriptions"])
+# === Middleware ===
+SESSION_SECRET = os.environ.get("SESSION_SECRET_KEY", "dev-session-fallback")
+app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET)
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+# === Routers ===
+app.include_router(google_auth_router, prefix="/auth", tags=["auth"])
+
+# === Routes ===
+@app.get("/", response_class=HTMLResponse)
+async def root(request: Request, user=Depends(get_current_user)) -> str:
+    email = user.get("email", "Unknown")
+    return f"""
+        <h1>✅ Login Successful</h1>
+        <p>Welcome, {email}!</p>
+        <p><a href="/auth/logout">Logout</a></p>
+    """
+
+@app.get("/public", response_class=HTMLResponse)
+async def public_home() -> str:
+    return """
+        <h1>🔓 Public Page</h1>
+        <p><a href="/auth/login/google">Login with Google</a></p>
+    """

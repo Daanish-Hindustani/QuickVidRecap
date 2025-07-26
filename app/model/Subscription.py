@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, DateTime, Enum, ForeignKey
 from sqlalchemy.dialects.mysql import CHAR
 from enum import Enum as PyEnum
-from db.database import Base
+from .. db.database import Base
 from datetime import datetime, timezone
 
 class SubscriptionTypeEnum(PyEnum):
